@@ -11,18 +11,18 @@ from keras.models import Model
 from keras.optimizers import Adam
 from keras.callbacks import TensorBoard, ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 
-from yolo3.model import preprocess_true_boxes, yolo_body, tiny_yolo_body, yolo_loss
+from yolo3.model import preprocess_true_boxes, yolo_body, tiny_yolo_body, yolo_loss, mobilenet_tiny_yolo_body
 from yolo3.utils import get_random_data
 
 
 def _main():
     # change the setting following!!!#############
     annotation_path = 'turtlebot_training/train.txt'
-    log_dir = 'logs/yolo_turtlebot_log/yolo_original_3.11'
+    log_dir = 'logs/yolo_mobilenet/'
     classes_path = 'turtlebot_training/classes.txt'
     anchors_path = 'turtlebot_training/anchor.txt'
     # only one of the following will be used
-    tiny_yolo_weights_path = 'turtlebot_training/darknet15_weights.h5'
+    tiny_yolo_weights_path = 'mobilenet/mobilenet_1_0_224_tf.h5'
     yolo_weights_path = 'model_data/yolo_weights.h5'
     first_stage_bs = 16
     second_stage_bs = 16
@@ -34,20 +34,14 @@ def _main():
 
     input_shape = (320, 320) # multiple of 32, hw
 
-    is_tiny_version = len(anchors)==6 # default setting
-    if is_tiny_version:
-        model = create_tiny_model(input_shape, anchors, num_classes,
-            freeze_body=3, weights_path=tiny_yolo_weights_path)
-    else:
-        model = create_model(input_shape, anchors, num_classes,
-            freeze_body=2, weights_path=yolo_weights_path) # make sure you know what you freeze
+    model = create_mobilenet_model(input_shape, anchors, num_classes, weights_path=tiny_yolo_weights_path)
 
     logging = TensorBoard(log_dir=log_dir)
     # 该回调函数将在period个epoch后保存模型到path中
     checkpoint = ModelCheckpoint(log_dir + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
-        monitor='val_loss', save_weights_only=True, save_best_only=False, period=3)
+        monitor='val_loss', save_weights_only=True, save_best_only=None, period=3)
     # 当评价指标不在提升时，减少学习率
-    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1)
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1)
     # 当监测值不再改善时，该回调函数将中止训练
     early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1)
 
@@ -68,6 +62,10 @@ def _main():
         model.compile(optimizer=Adam(lr=1e-3), loss={
             # use custom yolo_loss Lambda layer.
             'yolo_loss': lambda y_true, y_pred: y_pred})
+
+        for layer in model.layers:
+            if not layer.name.startswith('mobile_yolo_'):
+                layer.trainable = False
 
         batch_size = first_stage_bs
         print('Train on {} samples, val on {} samples, with batch size {}.'.format(num_train, num_val, batch_size))
@@ -100,7 +98,6 @@ def _main():
         model.save_weights(log_dir + 'trained_weights_final.h5')
 
     # Further training if needed.
-
 
 def get_classes(classes_path):
     '''loads the classes'''
@@ -171,11 +168,44 @@ def create_tiny_model(input_shape, anchors, num_classes, load_pretrained=True, f
         # by_name=False意味着通过网络结构进行读取
         model_body.load_weights(weights_path, by_name=True, skip_mismatch=True)
         print('Load weights {}.'.format(weights_path))
-        if freeze_body in [1, 2, 3]:
+        if freeze_body in [1, 2]:
             # Freeze the darknet body or freeze all but 2 output layers.
-            num = (20, len(model_body.layers)-2, 31)[freeze_body-1]
+            num = (20, len(model_body.layers)-2)[freeze_body-1]
             for i in range(num): model_body.layers[i].trainable = False
             print('Freeze the first {} layers of total {} layers.'.format(num, len(model_body.layers)))
+
+    # Lambda用以对上一层的输出施以任何TensorFlow表达式,此处是yolo_loss这个函数,[*model_body.output, *y_true]是传入的元素
+    # 调用函数使用＊，是将每个元素作为位置参数传入，所以现在相当于传入一个list [*model_body.output, *y_true]，元素数为len(model_body.output)+len(y_true)
+    model_loss = Lambda(yolo_loss, output_shape=(1,), name='yolo_loss',
+        arguments={'anchors': anchors, 'num_classes': num_classes, 'ignore_thresh': 0.7})(
+        [*model_body.output, *y_true])
+    model = Model([model_body.input, *y_true], model_loss)
+
+    return model
+
+def create_mobilenet_model(input_shape, anchors, num_classes, load_pretrained=True, weights_path='model_data/tiny_yolo_weights.h5'):
+    '''create the training model, for Tiny YOLOv3'''
+    K.clear_session() # get a new session
+    image_input = Input(shape=(None, None, 3))
+    h, w = input_shape
+    num_anchors = len(anchors)
+
+    # shape=(?, 10, 10, 3, 7) dtype=float32>, <tf.Tensor 'input_3:0' shape=(?, 20, 20, 3, 7) dtype=float32>
+    # 因为输出有两层，每一层是一个尺度上的检测，num_anchors//2代表这层的anchor的数量
+    # 这里是一个字典，0代表32，1代表16
+    # num_classes+5，中的5是两个坐标和objectness
+    # 这里只是定义了y_true的结构形式，并没有赋值
+    y_true = [Input(shape=(h//{0:32, 1:16}[l], w//{0:32, 1:16}[l], \
+        num_anchors//2, num_classes+5)) for l in range(2)]
+
+    model_body = mobilenet_tiny_yolo_body(image_input, num_anchors//2, num_classes)
+    print('Create Tiny YOLOv3 model with {} anchors and {} classes.'.format(num_anchors, num_classes))
+
+    if load_pretrained:
+        # by_name=True意味着通过layer的名字进行读取
+        # by_name=False意味着通过网络结构进行读取
+        model_body.load_weights(weights_path, by_name=True, skip_mismatch=True)
+        print('Load weights {}.'.format(weights_path))
 
     # Lambda用以对上一层的输出施以任何TensorFlow表达式,此处是yolo_loss这个函数,[*model_body.output, *y_true]是传入的元素
     # 调用函数使用＊，是将每个元素作为位置参数传入，所以现在相当于传入一个list [*model_body.output, *y_true]，元素数为len(model_body.output)+len(y_true)

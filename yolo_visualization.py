@@ -8,14 +8,18 @@ import tensorflow as tf
 import sys
 from visualization_flags import FLAGS
 from yolo3.model import tiny_yolo_body
+from tensorflow.python.framework import ops
 
-layer_visualize = "conv2d_13"
+# layer_visualize2是guided_model，由于层的名字按顺序累加出现，13+10=23，其实两个对应的是同一层网络
+layer_visualize = "conv2d_10"
+layer_visualize2 = "conv2d_23"
+
 weights_load_path = '/home/zq610/WYZ/deeplearning/network/keras-yolo3/turtlebot_model/yolov3_tiny_turtlebot.h5'
-pic_path = "/media/zq610/2C9BDE0469DC4DFC/ubuntu/dl_dataset/Dornet/training/HMB_2/images/1479425066348510906.png"
 anchors_path = 'turtlebot_training/anchor.txt'
 classes_path = 'turtlebot_training/classes.txt'
 annotation_path = 'turtlebot_training/train.txt'
-annotation_index = 735
+# this index represent the line index of annotation_lines
+annotation_index = 3
 with open(annotation_path) as f:
     annotation_lines = f.readlines()
 
@@ -25,7 +29,7 @@ def _compute_gradients(tensor, var_list):
     return [grad if grad is not None else tf.zeros_like(var)
             for var, grad in zip(var_list, grads)]
 
-def compile_saliency_function(model, activation_layer='res5c_branch2c'):
+def compile_saliency_function(model, activation_layer):
     input_img = model.input
     layer_dict = dict([(layer.name, layer) for layer in model.layers[1:]])
     layer_output = layer_dict[activation_layer].output
@@ -252,20 +256,8 @@ def yolo_head(feats, anchors, num_classes, input_shape, calc_loss=False):
         return grid, feats, box_xy, box_wh
     return box_xy, box_wh, box_confidence, box_class_probs
 
-def grad_cam(weights_load_path, layer_name, pic_path, input_shape):
-    image_input = Input(shape=(None, None, 3))
-    anchors = get_anchors(anchors_path)
-    num_anchors = len(anchors)
-    class_names = get_classes(classes_path)
-    num_classes = len(class_names)
-    model_body = tiny_yolo_body(image_input, num_anchors//2, num_classes)
-
-    try:
-        model_body.load_weights(weights_load_path, by_name=True)
-        print("Loaded model from {}".format(weights_load_path))
-    except:
-        print("Impossible to find weight path. Returning untrained model")
-
+def grad_cam(model_body, layer_name, input_shape):
+    ######## define the structure of model
     h, w = input_shape
     y_true = [Input(shape=(h//{0:32, 1:16}[l], w//{0:32, 1:16}[l], \
         num_anchors//2, num_classes+5)) for l in range(2)]
@@ -274,15 +266,17 @@ def grad_cam(weights_load_path, layer_name, pic_path, input_shape):
         arguments={'anchors': anchors, 'num_classes': num_classes, 'ignore_thresh': 0.7})(
         [*model_body.output, *y_true])
     model = Model([model_body.input, *y_true], outputs=model_loss)
-    # model.summary()
     loss = K.sum(model.output)
     conv_output = [l for l in model.layers if l.name == layer_name][0].output
     grads = normalize(_compute_gradients(loss, [conv_output])[0])
     # 此处的model.input就是[model_body.input, *y_true]，因为前面修改了定义
+    # attention: make sure the structure of placeholder is same with the input
     gradient_function = K.function(model.input, [conv_output, grads])
-
+    ######## end the define
+    # read the source and the label
+    # attention: the image_date is a normalized image array
     image_data, y_true_data = data_generator(input_shape, anchors, num_classes)
-
+    # calculate the gradient using the graph
     output, grads_val = gradient_function([image_data, y_true_data[0], y_true_data[1]])
     # 下面这块不是很理解，效果是否是一样的
     output, grads_val = output[0, :], grads_val[0, :, :, :]
@@ -301,17 +295,15 @@ def grad_cam(weights_load_path, layer_name, pic_path, input_shape):
     cam = np.maximum(cam, 0)
     heatmap = cam / np.max(cam)
 
-    # Return to BGR [0..255] from the preprocessed image
+    # because the image_date was normalized, so there is no need to normalize it
     image = image_data[0, :]
-    # image -= np.min(image)
-    # image = np.minimum(image, 255)
 
     # all colol map to the original image
     cam = cv2.applyColorMap(np.uint8(255 * heatmap), cv2.COLORMAP_JET)
     cam = np.float32(cam) + 255* np.float32(image)
     cam = 255 * cam / np.max(cam)
     # unit8 to save memory
-    return np.uint8(cam), heatmap
+    return np.uint8(cam), heatmap, image_data
 
 
 def yolo_loss(args, anchors, num_classes, ignore_thresh=.5, print_loss=False):
@@ -401,6 +393,58 @@ def jsonToModel(json_model_path):
     model = model_from_json(loaded_model_json)
     return model
 
+def modify_backprop(model, name, image_input, num_anchors, num_classes):
+    g = tf.get_default_graph()
+    # override the gradient function
+    with g.gradient_override_map({'Relu': name}):
+        # get layers that have an activation
+        layer_dict = [layer for layer in model.layers[1:]
+                      if hasattr(layer, 'activation')]
+
+        # replace relu activation
+        for layer in layer_dict:
+            layer.activation = tf.nn.relu
+            # if layer.activation == keras.activations.relu:
+            #     layer.activation = tf.nn.relu
+
+        # re-instanciate a new model
+        new_model = tiny_yolo_body(image_input, num_anchors // 2, num_classes)
+        try:
+            new_model.load_weights(weights_load_path)
+        except:
+            print("Impossible to find weight path. Returning untrained model")
+    return new_model
+
+def register_gradient():
+    if "GuidedBackProp" not in ops._gradient_registry._registry:
+        @ops.RegisterGradient("GuidedBackProp")
+        def _GuidedBackProp(op, grad):
+            dtype = op.inputs[0].dtype
+            return grad * tf.cast(grad > 0., dtype) * \
+                tf.cast(op.inputs[0] > 0., dtype)
+
+def deprocess_image(x):
+    '''
+    Same normalization as in:
+    https://github.com/fchollet/keras/blob/master/examples/conv_filter_visualization.py
+    '''
+    if np.ndim(x) > 3:
+        x = np.squeeze(x)
+    # normalize tensor: center on 0., ensure std is 0.1
+    x -= x.mean()
+    x /= (x.std() + 1e-5)
+    x *= 0.1
+
+    # clip to [0, 1]
+    x += 0.5
+    x = np.clip(x, 0, 1)
+
+    # convert to RGB array
+    x *= 255
+    if K.image_dim_ordering() == 'th':
+        x = x.transpose((1, 2, 0))
+    x = np.clip(x, 0, 255).astype('uint8')
+    return x
 
 if __name__ == "__main__":
     argv = FLAGS(sys.argv)
@@ -410,9 +454,28 @@ if __name__ == "__main__":
     # json_model_path = '/home/zq610/WYZ/deeplearning/network/rpg_public_dronet/model/model_struct.json'
     # weight_path = '/home/zq610/WYZ/deeplearning/network/rpg_public_dronet/model/model_weights.h5'
 
+    image_input = Input(shape=(None, None, 3))
+    anchors = get_anchors(anchors_path)
+    num_anchors = len(anchors)
+    class_names = get_classes(classes_path)
+    num_classes = len(class_names)
+    model_body = tiny_yolo_body(image_input, num_anchors//2, num_classes)
+    try:
+        model_body.load_weights(weights_load_path, by_name=True)
+        print("Loaded model from {}".format(weights_load_path))
+    except:
+        print("Impossible to find weight path. Returning untrained model")
 
-    cam, heatmap = grad_cam(weights_load_path, layer_visualize, pic_path, input_shape)
+    cam, heatmap, preprocessed_input= grad_cam(model_body, layer_visualize, input_shape)
     # while(cv2.waitKey(27)):
     #     cv2.imshow("WindowNameHere", cam)
 
     cv2.imwrite("gradcam.jpg", cam)
+
+    register_gradient()
+    guided_model = modify_backprop(model_body, 'GuidedBackProp', image_input, num_anchors, num_classes)
+    saliency_fn = compile_saliency_function(guided_model, layer_visualize2)
+    saliency = saliency_fn([preprocessed_input, 0])
+    # np.newaxis加一个维度
+    gradcam = saliency[0] * heatmap[..., np.newaxis]
+    cv2.imwrite("guided_gradcam.jpg", deprocess_image(gradcam))

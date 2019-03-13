@@ -7,14 +7,13 @@ from functools import wraps
 import numpy as np
 import tensorflow as tf
 from keras import backend as K
-from keras.layers import Conv2D, Add, ZeroPadding2D, UpSampling2D, Concatenate, MaxPooling2D
+from keras.layers import Conv2D, Add, ZeroPadding2D, UpSampling2D, Concatenate, MaxPooling2D, DepthwiseConv2D
 from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.normalization import BatchNormalization
 from keras.models import Model
 from keras.regularizers import l2
 from keras.layers.merge import add
 from keras.layers import Dense, Dropout, Activation, Flatten
-
 from yolo3.utils import compose
 
 
@@ -43,6 +42,45 @@ def DarknetConv2D_BN_Leaky(*args, **kwargs):
             DarknetConv2D(*args, **no_bias_kwargs),
             BatchNormalization(),
             LeakyReLU(alpha=0.1))
+
+def relu6(x):
+    return K.relu(x, max_value=6)
+
+def _depthwise_conv_block(inputs, pointwise_conv_filters, alpha,
+                          depth_multiplier=1, strides=(1, 1), block_id=1):
+    channel_axis = 1 if K.image_data_format() == 'channels_first' else -1
+    pointwise_conv_filters = int(pointwise_conv_filters * alpha)
+
+    x = ZeroPadding2D(padding=(1, 1), name='conv_pad_%d' % block_id)(inputs)
+    x = DepthwiseConv2D((3, 3),
+                        padding='valid',
+                        depth_multiplier=depth_multiplier,
+                        strides=strides,
+                        use_bias=False,
+                        name='conv_dw_%d' % block_id)(x)
+    x = BatchNormalization(axis=channel_axis, name='conv_dw_%d_bn' % block_id)(x)
+    x = Activation(relu6, name='conv_dw_%d_relu' % block_id)(x)
+
+    x = Conv2D(pointwise_conv_filters, (1, 1),
+               padding='same',
+               use_bias=False,
+               strides=(1, 1),
+               name='conv_pw_%d' % block_id)(x)
+    x = BatchNormalization(axis=channel_axis, name='conv_pw_%d_bn' % block_id)(x)
+    return Activation(relu6, name='conv_pw_%d_relu' % block_id)(x)
+
+def _conv_block(inputs, filters, alpha, kernel=(3, 3), strides=(1, 1)):
+    channel_axis = 1 if K.image_data_format() == 'channels_first' else -1
+    filters = int(filters * alpha)
+    x = ZeroPadding2D(padding=(1, 1), name='conv1_pad')(inputs)
+    x = Conv2D(filters, kernel,
+               padding='valid',
+               use_bias=False,
+               strides=strides,
+               name='conv1')(x)
+    x = BatchNormalization(axis=channel_axis, name='conv1_bn')(x)
+    return Activation(relu6, name='conv1_relu')(x)
+
 
 def resblock_body(x, num_filters, num_blocks):
     '''A series of resblocks starting with a downsampling Convolution2D'''
@@ -133,6 +171,47 @@ def tiny_yolo_body(inputs, num_anchors, num_classes):
     # 打印网络参数
     print(model.summary())
     return model
+
+
+def mobilenet_tiny_yolo_body(inputs, num_anchors, num_classes, alpha=1.0, depth_multiplier=1):
+    x = _conv_block(inputs, 32, alpha, strides=(2, 2))
+    x = _depthwise_conv_block(x, 64, alpha, depth_multiplier, block_id=1)
+    x = _depthwise_conv_block(x, 128, alpha, depth_multiplier,
+                              strides=(2, 2), block_id=2)
+    x = _depthwise_conv_block(x, 128, alpha, depth_multiplier, block_id=3)
+    x = _depthwise_conv_block(x, 256, alpha, depth_multiplier,
+                              strides=(2, 2), block_id=4)
+    x = _depthwise_conv_block(x, 256, alpha, depth_multiplier, block_id=5)
+    x = _depthwise_conv_block(x, 512, alpha, depth_multiplier,
+                              strides=(2, 2), block_id=6)
+    x = _depthwise_conv_block(x, 512, alpha, depth_multiplier, block_id=7)
+    x_mid = _depthwise_conv_block(x, 512, alpha, depth_multiplier, block_id=8)
+
+
+    x2 = _depthwise_conv_block(x_mid, 512, alpha, depth_multiplier, block_id=9)
+    x2 = _depthwise_conv_block(x2, 512, alpha, depth_multiplier, block_id=10)
+    x2 = _depthwise_conv_block(x2, 512, alpha, depth_multiplier, block_id=11)
+    x2 = _depthwise_conv_block(x2, 1024, alpha, depth_multiplier,
+                              strides=(2, 2), block_id=12)
+    x2 = _depthwise_conv_block(x2, 1024, alpha, depth_multiplier, block_id=13)
+
+
+    y1 = compose(DarknetConv2D_BN_Leaky(512, (3,3), name="mobile_yolo_conv1", BN_name='mobile_yolo_BN1'),
+                DarknetConv2D(num_anchors*(num_classes+5), (1,1), name="mobile_yolo_conv2"))(x2)
+
+    x3 = compose(
+            DarknetConv2D_BN_Leaky(128, (1,1), name="mobile_yolo_conv3", BN_name='mobile_yolo_BN2'),
+            UpSampling2D(2))(x2)
+
+    y2 = compose(
+            Concatenate(),
+            DarknetConv2D_BN_Leaky(256, (3,3), name="mobile_yolo_conv4", BN_name='mobile_yolo_BN3'),
+            DarknetConv2D(num_anchors*(num_classes+5), (1,1), name="mobile_yolo_conv5"))([x3, x_mid])
+
+    model = Model(inputs, [y1, y2])
+    print(model.summary())
+    return model
+
 
 def tiny_yolo_and_decision(inputs, num_anchors, num_classes, decision_output=1):
     '''Create Tiny YOLO_v3 model CNN body and rpg_dronet.'''
