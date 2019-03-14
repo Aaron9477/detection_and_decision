@@ -47,6 +47,7 @@ def get_random_data(annotation_line, input_shape, random=True, max_boxes=20, jit
     image = Image.open(line[0])
     iw, ih = image.size
     h, w = input_shape
+    # 读取基于原图大小的box
     box = np.array([np.array(list(map(int,box.split(',')))) for box in line[1:]])
 
     if not random:
@@ -74,6 +75,7 @@ def get_random_data(annotation_line, input_shape, random=True, max_boxes=20, jit
 
         return image_data, box_data
 
+    # 随机变化图像大小
     # resize image
     new_ar = w/h * rand(1-jitter,1+jitter)/rand(1-jitter,1+jitter)
     scale = rand(.25, 2)
@@ -88,7 +90,9 @@ def get_random_data(annotation_line, input_shape, random=True, max_boxes=20, jit
     # place image
     dx = int(rand(0, w-nw))
     dy = int(rand(0, h-nh))
+    # Image.new最后一个参数是对三个通道进行赋值，作为初始化
     new_image = Image.new('RGB', (w,h), (128,128,128))
+    # 只截取图像的一部分,和上面代码结合相当于随机缩放图像
     new_image.paste(image, (dx, dy))
     image = new_image
 
@@ -112,6 +116,7 @@ def get_random_data(annotation_line, input_shape, random=True, max_boxes=20, jit
 
     # correct boxes
     box_data = np.zeros((max_boxes,5))
+    # 将也进行同样的操作,同时化成以输入图像大小(320*320)的box
     if len(box)>0:
         np.random.shuffle(box)
         box[:, [0,2]] = box[:, [0,2]]*nw/iw + dx

@@ -17,10 +17,10 @@ from yolo3.utils import get_random_data
 
 def _main():
     # change the setting following!!!#############
-    annotation_path = 'turtlebot_training/train.txt'
-    log_dir = 'logs/yolo_mobilenet/'
-    classes_path = 'turtlebot_training/classes.txt'
-    anchors_path = 'turtlebot_training/anchor.txt'
+    annotation_path = 'voc_train_data/2007_train.txt'
+    log_dir = 'logs/yolo_voc/mobilenet_3.13/'
+    classes_path = 'voc_train_data/voc_classes.txt'
+    anchors_path = 'voc_train_data/anchor.txt'
     # only one of the following will be used
     tiny_yolo_weights_path = 'mobilenet/mobilenet_1_0_224_tf.h5'
     yolo_weights_path = 'model_data/yolo_weights.h5'

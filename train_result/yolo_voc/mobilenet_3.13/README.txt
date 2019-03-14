@@ -1,0 +1,2 @@
+使用mobilenet作为基础网络进行,VOC数据集
+但是anchor的设定,使用yolo_keras的,不知道对不对,需要细看代码

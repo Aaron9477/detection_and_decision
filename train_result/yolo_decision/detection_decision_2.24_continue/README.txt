@@ -1,0 +1,2 @@
+接着detection_decision_2.24进行训练得到的结果
+１８－２４epoch

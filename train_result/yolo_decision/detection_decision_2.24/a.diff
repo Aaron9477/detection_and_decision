@@ -1,0 +1,921 @@
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+index 6ef8ba2..fe6b2b9 100644
+--- a/.idea/workspace.xml
++++ b/.idea/workspace.xml
+@@ -3,11 +3,12 @@
+   <component name="ChangeListManager">
+     <list default="true" id="06c02438-23c6-41ad-92d4-52eeb54a8331" name="Default" comment="">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+-      <change beforePath="$PROJECT_DIR$/test.py" afterPath="$PROJECT_DIR$/test.py" />
++      <change beforePath="$PROJECT_DIR$/darknet_flags.py" afterPath="$PROJECT_DIR$/darknet_flags.py" />
++      <change beforePath="$PROJECT_DIR$/dornet_utils.py" afterPath="$PROJECT_DIR$/dornet_utils.py" />
++      <change beforePath="$PROJECT_DIR$/run_this.sh" afterPath="$PROJECT_DIR$/run_this.sh" />
+       <change beforePath="$PROJECT_DIR$/train.py" afterPath="$PROJECT_DIR$/train.py" />
+       <change beforePath="$PROJECT_DIR$/train_decision.py" afterPath="$PROJECT_DIR$/train_decision.py" />
+       <change beforePath="$PROJECT_DIR$/yolo3/model.py" afterPath="$PROJECT_DIR$/yolo3/model.py" />
+-      <change beforePath="$PROJECT_DIR$/yolo3/utils.py" afterPath="$PROJECT_DIR$/yolo3/utils.py" />
+     </list>
+     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+     <option name="TRACKING_ENABLED" value="true" />
+@@ -18,22 +19,22 @@
+   </component>
+   <component name="CoverageDataManager">
+     <SUITE FILE_PATH="coverage/keras_yolo3$xinli.coverage" NAME="xinli Coverage Results" MODIFIED="1548139182434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../../tmp" />
+-    <SUITE FILE_PATH="coverage/keras_yolo3$train_py.coverage" NAME="train.py Coverage Results" MODIFIED="1550818964362" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/keras_yolo3$test.coverage" NAME="train_decision.py Coverage Results" MODIFIED="1550819858182" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/keras_yolo3$train_py.coverage" NAME="train.py Coverage Results" MODIFIED="1551014327122" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/keras_yolo3$test.coverage" NAME="train_decision.py Coverage Results" MODIFIED="1551015818000" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/keras_yolo3$draw_two_line.coverage" NAME="draw_two_line Coverage Results" MODIFIED="1550127175890" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../darknet/backup/turtlebot_12.12/log" />
+   </component>
+   <component name="FavoritesManager">
+     <favorites_list name="keras-yolo3" />
+   </component>
+   <component name="FileEditorManager">
+-    <splitter split-orientation="horizontal" split-proportion="0.43145654">
++    <splitter split-orientation="horizontal" split-proportion="0.50244796">
+       <split-first>
+         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+           <file leaf-file-name="train_decision.py" pinned="false" current-in-tab="true">
+             <entry file="file://$PROJECT_DIR$/train_decision.py">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="195">
+-                  <caret line="246" column="4" lean-forward="false" selection-start-line="246" selection-start-column="4" selection-end-line="246" selection-end-column="4" />
++                <state relative-caret-position="267">
++                  <caret line="132" column="48" lean-forward="false" selection-start-line="132" selection-start-column="47" selection-end-line="132" selection-end-column="48" />
+                   <folding>
+                     <element signature="e#92#101#0" expanded="true" />
+                   </folding>
+@@ -41,33 +42,61 @@
+               </provider>
+             </entry>
+           </file>
++          <file leaf-file-name="callbacks.py" pinned="false" current-in-tab="false">
++            <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/callbacks.py">
++              <provider selected="true" editor-type-id="text-editor">
++                <state relative-caret-position="474">
++                  <caret line="392" column="8" lean-forward="false" selection-start-line="392" selection-start-column="8" selection-end-line="392" selection-end-column="8" />
++                  <folding />
++                </state>
++              </provider>
++            </entry>
++          </file>
++          <file leaf-file-name="poisson.py" pinned="false" current-in-tab="false">
++            <entry file="file:///usr/local/lib/python3.5/dist-packages/tensorflow/contrib/distributions/python/ops/poisson.py">
++              <provider selected="true" editor-type-id="text-editor">
++                <state relative-caret-position="204">
++                  <caret line="124" column="6" lean-forward="false" selection-start-line="124" selection-start-column="6" selection-end-line="124" selection-end-column="6" />
++                  <folding />
++                </state>
++              </provider>
++            </entry>
++          </file>
+           <file leaf-file-name="darknet_flags.py" pinned="false" current-in-tab="false">
+             <entry file="file://$PROJECT_DIR$/darknet_flags.py">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="297">
+-                  <caret line="17" column="33" lean-forward="false" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="33" />
++                <state relative-caret-position="76">
++                  <caret line="19" column="36" lean-forward="false" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
+                   <folding />
+                 </state>
+               </provider>
+             </entry>
+           </file>
+-          <file leaf-file-name="model.py" pinned="false" current-in-tab="false">
+-            <entry file="file://$PROJECT_DIR$/yolo3/model.py">
++          <file leaf-file-name="run_this.sh" pinned="false" current-in-tab="false">
++            <entry file="file://$PROJECT_DIR$/run_this.sh">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="195">
+-                  <caret line="415" column="4" lean-forward="false" selection-start-line="415" selection-start-column="4" selection-end-line="415" selection-end-column="4" />
+-                  <folding>
+-                    <element signature="e#77#104#0" expanded="true" />
+-                  </folding>
++                <state relative-caret-position="252">
++                  <caret line="14" column="70" lean-forward="false" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="70" />
++                  <folding />
+                 </state>
+               </provider>
+             </entry>
+           </file>
+-          <file leaf-file-name="core.py" pinned="false" current-in-tab="false">
+-            <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/layers/core.py">
++          <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
++            <entry file="file://$PROJECT_DIR$/train.py">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="195">
+-                  <caret line="600" column="8" lean-forward="false" selection-start-line="600" selection-start-column="8" selection-end-line="600" selection-end-column="8" />
++                <state relative-caret-position="288">
++                  <caret line="24" column="30" lean-forward="false" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="70" />
++                  <folding />
++                </state>
++              </provider>
++            </entry>
++          </file>
++          <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
++            <entry file="file://$PROJECT_DIR$/test.py">
++              <provider selected="true" editor-type-id="text-editor">
++                <state relative-caret-position="144">
++                  <caret line="8" column="19" lean-forward="false" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+                   <folding />
+                 </state>
+               </provider>
+@@ -80,8 +109,8 @@
+           <file leaf-file-name="train_decision.py" pinned="false" current-in-tab="false">
+             <entry file="file://$PROJECT_DIR$/train_decision.py">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="387">
+-                  <caret line="306" column="0" lean-forward="false" selection-start-line="306" selection-start-column="0" selection-end-line="306" selection-end-column="0" />
++                <state relative-caret-position="195">
++                  <caret line="114" column="28" lean-forward="false" selection-start-line="113" selection-start-column="26" selection-end-line="114" selection-end-column="28" />
+                   <folding>
+                     <element signature="e#92#101#0" expanded="true" />
+                   </folding>
+@@ -89,36 +118,38 @@
+               </provider>
+             </entry>
+           </file>
+-          <file leaf-file-name="model.py" pinned="false" current-in-tab="false">
+-            <entry file="file://$PROJECT_DIR$/yolo3/model.py">
++          <file leaf-file-name="dronet_log_utils.py" pinned="false" current-in-tab="false">
++            <entry file="file://$PROJECT_DIR$/dronet_log_utils.py">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="253">
+-                  <caret line="415" column="8" lean-forward="false" selection-start-line="415" selection-start-column="8" selection-end-line="415" selection-end-column="8" />
++                <state relative-caret-position="1211">
++                  <caret line="122" column="13" lean-forward="false" selection-start-line="122" selection-start-column="13" selection-end-line="122" selection-end-column="13" />
+                   <folding>
+-                    <element signature="e#77#104#0" expanded="true" />
++                    <element signature="e#0#18#0" expanded="true" />
+                   </folding>
+                 </state>
+               </provider>
+             </entry>
+           </file>
+-          <file leaf-file-name="dornet_utils.py" pinned="false" current-in-tab="false">
+-            <entry file="file://$PROJECT_DIR$/dornet_utils.py">
++          <file leaf-file-name="model.py" pinned="false" current-in-tab="true">
++            <entry file="file://$PROJECT_DIR$/yolo3/model.py">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="-1391">
+-                  <caret line="460" column="8" lean-forward="false" selection-start-line="460" selection-start-column="8" selection-end-line="460" selection-end-column="8" />
++                <state relative-caret-position="144">
++                  <caret line="23" column="56" lean-forward="false" selection-start-line="23" selection-start-column="56" selection-end-line="23" selection-end-column="56" />
+                   <folding>
+-                    <element signature="e#38#47#0" expanded="true" />
++                    <element signature="e#77#104#0" expanded="true" />
+                   </folding>
+                 </state>
+               </provider>
+             </entry>
+           </file>
+-          <file leaf-file-name="train.py" pinned="false" current-in-tab="true">
+-            <entry file="file://$PROJECT_DIR$/train.py">
++          <file leaf-file-name="dornet_utils.py" pinned="false" current-in-tab="false">
++            <entry file="file://$PROJECT_DIR$/dornet_utils.py">
+               <provider selected="true" editor-type-id="text-editor">
+-                <state relative-caret-position="-399">
+-                  <caret line="143" column="24" lean-forward="false" selection-start-line="143" selection-start-column="24" selection-end-line="143" selection-end-column="24" />
+-                  <folding />
++                <state relative-caret-position="113">
++                  <caret line="422" column="10" lean-forward="false" selection-start-line="422" selection-start-column="10" selection-end-line="422" selection-end-column="10" />
++                  <folding>
++                    <element signature="e#38#47#0" expanded="true" />
++                  </folding>
+                 </state>
+               </provider>
+             </entry>
+@@ -136,36 +167,36 @@
+   </component>
+   <component name="FindInProjectRecents">
+     <findStrings>
+-      <find>data_generator</find>
+-      <find>model</find>
+-      <find>num_classes</find>
+-      <find>log_dir</find>
+-      <find>train_dir</find>
+-      <find>restore_model</find>
+-      <find>epoch</find>
+-      <find>FLAGS</find>
+-      <find>load</find>
+-      <find>follow_links</find>
+-      <find>annotation_line</find>
+-      <find>line</find>
++      <find>checkpoint</find>
++      <find>rate</find>
++      <find>lr</find>
++      <find>y_pred</find>
++      <find>k_entropy</find>
+       <find>reduce_lr</find>
+-      <find>exp_type</find>
+-      <find>samples</find>
+-      <find>batch</find>
+-      <find>batch_steer</find>
+-      <find>anchor_mask</find>
+-      <find>args</find>
+-      <find>losses</find>
+-      <find>lines</find>
+-      <find>image_shape</find>
+-      <find>first_stage_bs</find>
+-      <find>batch_size</find>
+-      <find>FLAGS.batch_size</find>
+-      <find>yolo_default_label</find>
++      <find>time</find>
++      <find>weight_l</find>
++      <find>weighted_loss</find>
++      <find>compile</find>
++      <find>log_rate</find>
++      <find>experiment_rootdir</find>
++      <find>weights_path</find>
++      <find>ETA</find>
++      <find>verbose</find>
++      <find>loss</find>
++      <find>ProgbarLogger</find>
++      <find>_loss</find>
++      <find>stateful_metric_names</find>
++      <find>metrics</find>
++      <find>total_loss = None</find>
++      <find>loss_functions</find>
++      <find>weighted_losses</find>
++      <find>loss_weights</find>
++      <find>loss_weights_list</find>
+       <find>img_mode</find>
+-      <find>model_loss</find>
+-      <find>y_true</find>
+-      <find>y_pred</find>
++      <find>stateful_metrics</find>
++      <find>model_weights</find>
++      <find>alpha</find>
++      <find>loss_weight</find>
+     </findStrings>
+   </component>
+   <component name="Git.Settings">
+@@ -177,16 +208,18 @@
+         <option value="$PROJECT_DIR$/convert.py" />
+         <option value="$PROJECT_DIR$/yolo.py" />
+         <option value="$PROJECT_DIR$/yolo3/test.py" />
+-        <option value="$PROJECT_DIR$/run_this.sh" />
+         <option value="$PROJECT_DIR$/../../../tmp/xinli.py" />
+         <option value="$PROJECT_DIR$/../darknet/backup/turtlebot_12.12/log/draw_two_line.py" />
+         <option value="$PROJECT_DIR$/test.py" />
+         <option value="$PROJECT_DIR$/yolo3/utils.py" />
+-        <option value="$PROJECT_DIR$/train.py" />
++        <option value="$PROJECT_DIR$/dronet_logz.py" />
++        <option value="$PROJECT_DIR$/dronet_log_utils.py" />
++        <option value="$PROJECT_DIR$/run_this.sh" />
+         <option value="$PROJECT_DIR$/dornet_utils.py" />
+-        <option value="$PROJECT_DIR$/darknet_flags.py" />
++        <option value="$PROJECT_DIR$/train.py" />
+         <option value="$PROJECT_DIR$/yolo3/model.py" />
+         <option value="$PROJECT_DIR$/train_decision.py" />
++        <option value="$PROJECT_DIR$/darknet_flags.py" />
+       </list>
+     </option>
+   </component>
+@@ -198,9 +231,9 @@
+   </component>
+   <component name="ProjectFrameBounds" extendedState="6">
+     <option name="x" value="976" />
+-    <option name="y" value="263" />
+-    <option name="width" value="928" />
+-    <option name="height" value="1084" />
++    <option name="y" value="32" />
++    <option name="width" value="926" />
++    <option name="height" value="1048" />
+   </component>
+   <component name="ProjectInspectionProfilesVisibleTreeState">
+     <entry key="Project Default">
+@@ -406,18 +439,19 @@
+     <servers />
+   </component>
+   <component name="ToolWindowManager">
+-    <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
++    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+     <editor active="true" />
+     <layout>
+       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32948583" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
++      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32948583" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.119137466" sideWeight="0.4963274" order="1" side_tool="false" content_ui="combo" />
+       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
++      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5148248" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31689402" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+@@ -427,7 +461,6 @@
+       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+     </layout>
+   </component>
+@@ -446,7 +479,7 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+           <url>file://$PROJECT_DIR$/train_decision.py</url>
+-          <line>314</line>
++          <line>335</line>
+           <option name="timeStamp" value="34" />
+         </line-breakpoint>
+         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+@@ -461,9 +494,14 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+           <url>file://$PROJECT_DIR$/train_decision.py</url>
+-          <line>250</line>
++          <line>271</line>
+           <option name="timeStamp" value="46" />
+         </line-breakpoint>
++        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
++          <url>file://$PROJECT_DIR$/train_decision.py</url>
++          <line>138</line>
++          <option name="timeStamp" value="49" />
++        </line-breakpoint>
+       </breakpoints>
+       <default-breakpoints>
+         <breakpoint type="python-exception">
+@@ -472,7 +510,7 @@
+           </properties>
+         </breakpoint>
+       </default-breakpoints>
+-      <option name="time" value="47" />
++      <option name="time" value="52" />
+     </breakpoint-manager>
+     <watches-manager>
+       <configuration name="PythonConfigurationType">
+@@ -549,50 +587,6 @@
+     </expressions>
+   </component>
+   <component name="editorHistoryManager">
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/tensorflow/python/client/session.py">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="13806">
+-          <caret line="786" column="6" lean-forward="false" selection-start-line="786" selection-start-column="6" selection-end-line="786" selection-end-column="6" />
+-        </state>
+-      </provider>
+-    </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/tensorflow/python/ops/variables.py">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="23418">
+-          <caret line="1317" column="4" lean-forward="false" selection-start-line="1317" selection-start-column="4" selection-end-line="1317" selection-end-column="4" />
+-          <folding />
+-        </state>
+-      </provider>
+-    </entry>
+-    <entry file="file://$PROJECT_DIR$/run_this.sh">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="126">
+-          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+-        </state>
+-      </provider>
+-    </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/tensorflow/python/client/session.py">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="13824">
+-          <caret line="780" column="6" lean-forward="false" selection-start-line="780" selection-start-column="6" selection-end-line="780" selection-end-column="6" />
+-        </state>
+-      </provider>
+-    </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/tensorflow/python/ops/variables.py">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="23418">
+-          <caret line="1429" column="4" lean-forward="false" selection-start-line="1429" selection-start-column="4" selection-end-line="1429" selection-end-column="4" />
+-          <folding />
+-        </state>
+-      </provider>
+-    </entry>
+-    <entry file="file://$PROJECT_DIR$/.gitignore">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="198">
+-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+-        </state>
+-      </provider>
+-    </entry>
+     <entry file="file://$PROJECT_DIR$/../darknet/scripts/voc_label_wyz.py">
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="918">
+@@ -630,13 +624,6 @@
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/run_this.sh">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="0">
+-          <caret line="0" column="19" lean-forward="false" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+-        </state>
+-      </provider>
+-    </entry>
+     <entry file="file://$PROJECT_DIR$/yolov3-tiny.cfg">
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="0">
+@@ -790,170 +777,226 @@
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/backend/tensorflow_backend.py">
++    <entry file="file://$PROJECT_DIR$/utils.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="235">
+-          <caret line="1860" column="4" lean-forward="false" selection-start-line="1860" selection-start-column="4" selection-end-line="1860" selection-end-column="4" />
++        <state relative-caret-position="198">
++          <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/callbacks.py">
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/optimizers.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="460">
+-          <caret line="392" column="8" lean-forward="false" selection-start-line="392" selection-start-column="8" selection-end-line="392" selection-end-column="8" />
++        <state relative-caret-position="208">
++          <caret line="427" column="8" lean-forward="false" selection-start-line="427" selection-start-column="8" selection-end-line="427" selection-end-column="8" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/utils.py">
++    <entry file="file:///usr/lib/python3/dist-packages/apport_python_hook.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="198">
+-          <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
++        <state relative-caret-position="918">
++          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/optimizers.py">
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/preprocessing/image.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="208">
+-          <caret line="427" column="8" lean-forward="false" selection-start-line="427" selection-start-column="8" selection-end-line="427" selection-end-column="8" />
++        <state relative-caret-position="588">
++          <caret line="939" column="13" lean-forward="false" selection-start-line="939" selection-start-column="13" selection-end-line="939" selection-end-column="13" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/lib/python3/dist-packages/apport_python_hook.py">
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/tensorflow/python/keras/_impl/keras/preprocessing/image.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="918">
+-          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
++        <state relative-caret-position="199">
++          <caret line="786" column="6" lean-forward="false" selection-start-line="786" selection-start-column="6" selection-end-line="786" selection-end-column="6" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/test.py">
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/legacy/interfaces.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="144">
+-          <caret line="8" column="19" lean-forward="false" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
++        <state relative-caret-position="204">
++          <caret line="90" column="0" lean-forward="false" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-1247971764/builtins.py">
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/layers/core.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="208">
+-          <caret line="517" column="4" lean-forward="false" selection-start-line="517" selection-start-column="4" selection-end-line="517" selection-end-column="4" />
++        <state relative-caret-position="195">
++          <caret line="600" column="8" lean-forward="false" selection-start-line="600" selection-start-column="8" selection-end-line="600" selection-end-column="8" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/preprocessing/image.py">
++    <entry file="file://$PROJECT_DIR$/dronet_logz.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="588">
+-          <caret line="939" column="13" lean-forward="false" selection-start-line="939" selection-start-column="13" selection-end-line="939" selection-end-column="13" />
++        <state relative-caret-position="378">
++          <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/losses.py">
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/backend/tensorflow_backend.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="-32">
+-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+-          <folding>
+-            <element signature="e#32#70#0" expanded="false" />
+-          </folding>
++        <state relative-caret-position="-498">
++          <caret line="148" column="4" lean-forward="false" selection-start-line="148" selection-start-column="4" selection-end-line="148" selection-end-column="4" />
++          <folding />
+         </state>
+       </provider>
+     </entry>
+     <entry file="file://$PROJECT_DIR$/yolo3/utils.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="-315">
++        <state relative-caret-position="18">
+           <caret line="131" column="24" lean-forward="false" selection-start-line="131" selection-start-column="24" selection-end-line="131" selection-end-column="24" />
+-          <folding>
+-            <element signature="e#78#109#0" expanded="false" />
+-          </folding>
++          <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/tensorflow/python/keras/_impl/keras/preprocessing/image.py">
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/engine/topology.py">
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="199">
+-          <caret line="786" column="6" lean-forward="false" selection-start-line="786" selection-start-column="6" selection-end-line="786" selection-end-column="6" />
++          <caret line="1922" column="8" lean-forward="false" selection-start-line="1922" selection-start-column="8" selection-end-line="1922" selection-end-column="8" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/legacy/interfaces.py">
++    <entry file="file://$USER_HOME$/.PyCharm2017.3/system/python_stubs/-1247971764/builtins.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="204">
+-          <caret line="90" column="0" lean-forward="false" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
++        <state relative-caret-position="195">
++          <caret line="719" column="6" lean-forward="false" selection-start-line="719" selection-start-column="6" selection-end-line="719" selection-end-column="6" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/darknet_flags.py">
++    <entry file="file:///usr/lib/python3.5/collections/__init__.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="297">
+-          <caret line="17" column="33" lean-forward="false" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="33" />
++        <state relative-caret-position="465">
++          <caret line="85" column="8" lean-forward="false" selection-start-line="85" selection-start-column="8" selection-end-line="85" selection-end-column="8" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/engine/topology.py">
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/utils/generic_utils.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="18">
+-          <caret line="1466" column="6" lean-forward="false" selection-start-line="1466" selection-start-column="6" selection-end-line="1466" selection-end-column="6" />
++        <state relative-caret-position="37">
++          <caret line="318" column="14" lean-forward="false" selection-start-line="318" selection-start-column="8" selection-end-line="318" selection-end-column="14" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/engine/training.py">
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/losses.py">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="311">
++          <caret line="119" column="20" lean-forward="false" selection-start-line="119" selection-start-column="20" selection-end-line="119" selection-end-column="20" />
++          <folding>
++            <element signature="e#32#70#0" expanded="false" />
++          </folding>
++        </state>
++      </provider>
++    </entry>
++    <entry file="file://$PROJECT_DIR$/train.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="87">
+-          <caret line="544" column="15" lean-forward="false" selection-start-line="544" selection-start-column="15" selection-end-line="544" selection-end-column="15" />
++        <state relative-caret-position="288">
++          <caret line="24" column="30" lean-forward="false" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="70" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/dornet_utils.py">
++    <entry file="file://$PROJECT_DIR$/dronet_log_utils.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="-1391">
+-          <caret line="460" column="8" lean-forward="false" selection-start-line="460" selection-start-column="8" selection-end-line="460" selection-end-column="8" />
++        <state relative-caret-position="1211">
++          <caret line="122" column="13" lean-forward="false" selection-start-line="122" selection-start-column="13" selection-end-line="122" selection-end-column="13" />
+           <folding>
+-            <element signature="e#38#47#0" expanded="true" />
++            <element signature="e#0#18#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/layers/core.py">
++    <entry file="file://$PROJECT_DIR$/dornet_utils.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="195">
+-          <caret line="600" column="8" lean-forward="false" selection-start-line="600" selection-start-column="8" selection-end-line="600" selection-end-column="8" />
+-          <folding />
++        <state relative-caret-position="113">
++          <caret line="422" column="10" lean-forward="false" selection-start-line="422" selection-start-column="10" selection-end-line="422" selection-end-column="10" />
++          <folding>
++            <element signature="e#38#47#0" expanded="true" />
++          </folding>
+         </state>
+       </provider>
+     </entry>
+     <entry file="file://$PROJECT_DIR$/yolo3/model.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="195">
+-          <caret line="415" column="4" lean-forward="false" selection-start-line="415" selection-start-column="4" selection-end-line="415" selection-end-column="4" />
++        <state relative-caret-position="144">
++          <caret line="23" column="56" lean-forward="false" selection-start-line="23" selection-start-column="56" selection-end-line="23" selection-end-column="56" />
+           <folding>
+             <element signature="e#77#104#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/train.py">
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/tensorflow/python/ops/gradients_impl.py">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="1098">
++          <caret line="95" column="0" lean-forward="false" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
++          <folding />
++        </state>
++      </provider>
++    </entry>
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/engine/training.py">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="182">
++          <caret line="539" column="43" lean-forward="false" selection-start-line="539" selection-start-column="43" selection-end-line="539" selection-end-column="43" />
++          <folding />
++        </state>
++      </provider>
++    </entry>
++    <entry file="file://$PROJECT_DIR$/run_this.sh">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="252">
++          <caret line="14" column="70" lean-forward="false" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="70" />
++          <folding />
++        </state>
++      </provider>
++    </entry>
++    <entry file="file://$PROJECT_DIR$/test.py">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="144">
++          <caret line="8" column="19" lean-forward="false" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
++          <folding />
++        </state>
++      </provider>
++    </entry>
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/tensorflow/contrib/distributions/python/ops/poisson.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="-399">
+-          <caret line="143" column="24" lean-forward="false" selection-start-line="143" selection-start-column="24" selection-end-line="143" selection-end-column="24" />
++        <state relative-caret-position="204">
++          <caret line="124" column="6" lean-forward="false" selection-start-line="124" selection-start-column="6" selection-end-line="124" selection-end-column="6" />
++          <folding />
++        </state>
++      </provider>
++    </entry>
++    <entry file="file:///usr/local/lib/python3.5/dist-packages/keras/callbacks.py">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="474">
++          <caret line="392" column="8" lean-forward="false" selection-start-line="392" selection-start-column="8" selection-end-line="392" selection-end-column="8" />
++          <folding />
++        </state>
++      </provider>
++    </entry>
++    <entry file="file://$PROJECT_DIR$/darknet_flags.py">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="76">
++          <caret line="19" column="36" lean-forward="false" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
+           <folding />
+         </state>
+       </provider>
+     </entry>
+     <entry file="file://$PROJECT_DIR$/train_decision.py">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="195">
+-          <caret line="246" column="4" lean-forward="false" selection-start-line="246" selection-start-column="4" selection-end-line="246" selection-end-column="4" />
++        <state relative-caret-position="267">
++          <caret line="132" column="48" lean-forward="false" selection-start-line="132" selection-start-column="47" selection-end-line="132" selection-end-column="48" />
+           <folding>
+             <element signature="e#92#101#0" expanded="true" />
+           </folding>
+diff --git a/darknet_flags.py b/darknet_flags.py
+index 26bd6af..61b1c09 100644
+--- a/darknet_flags.py
++++ b/darknet_flags.py
+@@ -15,13 +15,13 @@ gflags.DEFINE_string('img_mode', "rgb", 'Load mode for images, either '
+                      'rgb or grayscale')
+ 
+ # Training
+-gflags.DEFINE_integer('batch_size', 8, 'Batch size in training and evaluation')
++gflags.DEFINE_integer('batch_size', 64, 'Batch size in training and evaluation')
+ gflags.DEFINE_integer('epochs', 50, 'Number of epochs for training')
+ gflags.DEFINE_integer('log_rate', 10, 'Logging rate for full model (epochs)')
+-gflags.DEFINE_integer('initial_epoch', 0, 'Initial epoch to start training')
++gflags.DEFINE_integer('initial_epoch', 6, 'Initial epoch to start training')
+ 
+ # Files
+-gflags.DEFINE_string('experiment_rootdir', "/home/zq610/WYZ/deeplearning/network/rpg_public_dronet/darknet14", 'Folder '
++gflags.DEFINE_string('experiment_rootdir', "/home/zq610/WYZ/deeplearning/network/keras-yolo3/logs/detection_decision", 'Folder '
+                      ' containing all the logs, model weights and results')
+ gflags.DEFINE_string('train_dir', "/media/zq610/2C9BDE0469DC4DFC/ubuntu/dl_dataset/Dornet/training", 'Folder containing'
+                      ' training experiments')
+@@ -29,13 +29,13 @@ gflags.DEFINE_string('val_dir', "/media/zq610/2C9BDE0469DC4DFC/ubuntu/dl_dataset
+                      ' validation experiments')
+ gflags.DEFINE_string('test_dir', "/media/zq610/2C9BDE0469DC4DFC/ubuntu/dl_dataset/Dornet/testing", 'Folder containing'
+                      ' testing experiments')
+-gflags.DEFINE_string('log_dir', "/home/zq610/WYZ/deeplearning/network/rpg_public_dronet/logs/darknet", 'Folder containing'
++gflags.DEFINE_string('log_dir', "/home/zq610/WYZ/deeplearning/network/keras-yolo3/logs/detection_decision", 'Folder containing'
+                      ' training logs')
+ 
+ # Model
+ gflags.DEFINE_bool('restore_model', False, 'Whether to restore a trained'
+                    ' model for training')
+-gflags.DEFINE_string('weights_fname', "model_weights.h5", '(Relative) '
++gflags.DEFINE_string('weights_fname', "/home/zq610/WYZ/deeplearning/network/keras-yolo3/logs/detection_decision2/ep006-loss4.120-val_loss4.098.h5", '(Relative) '
+                                           'filename of model weights')
+ gflags.DEFINE_string('json_model_fname', "model_struct.json",
+                           'Model struct json serialization, filename')
+diff --git a/dornet_utils.py b/dornet_utils.py
+index 42fa5de..807fcfc 100644
+--- a/dornet_utils.py
++++ b/dornet_utils.py
+@@ -351,10 +351,12 @@ def hard_mining_mse(k):
+             true_steer = y_true[:,1]
+ 
+             # Steering loss
++            # 平方差误差
+             l_steer = tf.multiply(t, K.square(pred_steer - true_steer))
+ 
+             # Hard mining
+             k_min = tf.minimum(k, n_samples_steer)
++            # 选取k_min个最大的误差
+             _, indices = tf.nn.top_k(l_steer, k=k_min)
+             max_l_steer = tf.gather(l_steer, indices)
+             hard_l_steer = tf.divide(tf.reduce_sum(max_l_steer), tf.cast(k,tf.float32))
+diff --git a/run_this.sh b/run_this.sh
+index 181b0a8..120de72 100755
+--- a/run_this.sh
++++ b/run_this.sh
+@@ -24,5 +24,5 @@
+ 
+ 
+ # test the model trained from keras-yolo, using the video
+-python yolo_video.py --model logs/trained_weights_final.h5 --anchors turtlebot_training/anchor.txt --classes turtlebot_training/classes.txt --gpu_num 1 --input /media/zq610/2C9BDE0469DC4DFC/ubuntu/dl_dataset/turtlebot/raw_videos/two_small_1.mp4
++#python yolo_video.py --model logs/trained_weights_final.h5 --anchors turtlebot_training/anchor.txt --classes turtlebot_training/classes.txt --gpu_num 1 --input /media/zq610/2C9BDE0469DC4DFC/ubuntu/dl_dataset/turtlebot/raw_videos/two_small_1.mp4
+ 
+diff --git a/train.py b/train.py
+index e482bb6..c05a875 100644
+--- a/train.py
++++ b/train.py
+@@ -22,7 +22,7 @@ def _main():
+     classes_path = 'turtlebot_training/classes.txt'
+     anchors_path = 'turtlebot_training/anchor.txt'
+     # only one of the following will be used
+-    tiny_yolo_weights_path = 'turtlebot_training/darknet15_weights.h5'
++    tiny_yolo_weights_path = 'turtlebot_model/yolov3_tiny_turtlebot.h5'
+     yolo_weights_path = 'model_data/yolo_weights.h5'
+     first_stage_bs = 16
+     second_stage_bs = 16
+diff --git a/train_decision.py b/train_decision.py
+index 02a5e8e..79882fd 100644
+--- a/train_decision.py
++++ b/train_decision.py
+@@ -19,6 +19,7 @@ import dornet_utils
+ from darknet_flags import FLAGS
+ import tensorflow as tf
+ from yolo3 import utils
++import dronet_log_utils
+ 
+ 
+ def _main(argv):
+@@ -31,7 +32,7 @@ def _main(argv):
+     anchors_path = 'detection_decision/anchor.txt'
+     # because I just use the tiny version, so only one of the following will be used
+     # read the weight file trained only by yolo
+-    tiny_yolo_weights_path = 'detection_decision/darknet15_weights.h5'
++    tiny_yolo_weights_path = 'turtlebot_model/yolov3_tiny_turtlebot.h5'
+     yolo_weights_path = 'model_data/yolo_weights.h5'
+     # TODO: the bs may need be changed
+     batch_size = FLAGS.batch_size
+@@ -49,10 +50,18 @@ def _main(argv):
+ 
+     input_shape = (320, 320) # multiple of 32, hw
+ 
++    initial_epoch = 0
++    if not FLAGS.restore_model:
++        # In this case weights will start from random
++        weights_path = None
++    else:
++        weights_path = FLAGS.weights_fname
++        initial_epoch = FLAGS.initial_epoch
++
+     is_tiny_version = len(anchors) == 6 # default setting
+     if is_tiny_version:
+         model = create_tiny_model(input_shape, anchors, num_classes, dronet_trainable_layer, \
+-            freeze_body=2, weights_path=tiny_yolo_weights_path, )
++            freeze_body=2, yolo_weights_path=tiny_yolo_weights_path, weights_path=weights_path)
+     else:
+         model = create_model(input_shape, anchors, num_classes,
+             freeze_body=2, weights_path=yolo_weights_path) # make sure you know what you freeze
+@@ -60,11 +69,11 @@ def _main(argv):
+     logging = TensorBoard(log_dir=log_dir)
+     # 该回调函数将在period个epoch后保存模型到path中
+     checkpoint = ModelCheckpoint(log_dir + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
+-        monitor='val_loss', save_weights_only=True, save_best_only=True, period=3)
++        monitor='val_loss', save_weights_only=True, save_best_only=False, period=3)
+     # 当评价指标不在提升时，减少学习率
+-    # reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1)
++    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1)
+     # 当监测值不再改善时，该回调函数将中止训练
+-    # early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1)
++    early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1)
+ 
+     val_split = 0.1
+     # 读取dataset，并打乱顺序
+@@ -102,6 +111,8 @@ def _main(argv):
+     model.k_mse = tf.Variable(batch_size, trainable=False, name='k_mse', dtype=tf.int32)
+     model.k_entropy = tf.Variable(batch_size, trainable=False, name='k_entropy', dtype=tf.int32)
+ 
++    # json_model_path = os.path.join(FLAGS.experiment_rootdir, FLAGS.json_model_fname)
++    # dornet_utils.modelToJson(model, json_model_path)
+ 
+     # Train with frozen layers first, to get a stable loss.
+     # Adjust num epochs to your dataset. This step is enough to obtain a not bad model.
+@@ -114,6 +125,11 @@ def _main(argv):
+                             'activation_2': dornet_utils.hard_mining_entropy(model.k_entropy)},
+                     optimizer=Adam(lr=1e-3), loss_weights=[0, model.alpha, model.beta])
+ 
++        dronet_log_utils.configure_output_dir(FLAGS.experiment_rootdir)
++        saveModelAndLoss = dronet_log_utils.MyCallback(filepath=FLAGS.experiment_rootdir,
++                                                period=FLAGS.log_rate,
++                                                batch_size=FLAGS.batch_size)
++
+         print('Train on {} samples, val on {} samples, with batch size {}.'
+               .format(dronet_train_dataset.samples, dronet_val_dataset.samples, batch_size))
+         steps_per_epoch = int(np.ceil(dronet_train_dataset.samples / batch_size))
+@@ -123,11 +139,11 @@ def _main(argv):
+         model.fit_generator(data_generator_wrapper(dronet_train_dataset, lines[:num_train],
+                                                    batch_size, input_shape, anchors, num_classes),
+                             epochs=FLAGS.epochs, steps_per_epoch=steps_per_epoch,
+-                            callbacks=[logging, checkpoint],
++                            callbacks=[saveModelAndLoss, logging, checkpoint, reduce_lr, ],
+                             validation_data=data_generator_wrapper(dronet_val_dataset,
+                                             lines[num_train:], batch_size, input_shape, anchors, num_classes),
+                             validation_steps=validation_steps,
+-                            initial_epoch=0, )
++                            initial_epoch=initial_epoch, )
+ 
+         model.save_weights(log_dir + 'trained_weights_stage_1.h5')
+ 
+@@ -199,8 +215,8 @@ def create_model(input_shape, anchors, num_classes, load_pretrained=True, freeze
+ 
+     return model
+ 
+-def create_tiny_model(input_shape, anchors, num_classes, dronet_trainable_layer, load_pretrained=True,
+-                      freeze_body=2, weights_path='model_data/tiny_yolo_weights.h5'):
++def create_tiny_model(input_shape, anchors, num_classes, dronet_trainable_layer, weights_path,
++                      load_pretrained=True, freeze_body=2, yolo_weights_path='model_data/tiny_yolo_weights.h5', ):
+     '''create the training model, for Tiny YOLOv3'''
+     K.clear_session() # get a new session
+     h, w = input_shape
+@@ -224,11 +240,16 @@ def create_tiny_model(input_shape, anchors, num_classes, dronet_trainable_layer,
+     print('Create Tiny YOLOv3 model with {} anchors and {} classes.'.format(num_anchors, num_classes))
+ 
+     if load_pretrained:
+-        # by_name=True意味着通过layer的名字进行读取
+-        # by_name=False意味着通过网络结构进行读取
+-        # 这里应该是因为所有的layer都是默认的名字，所以，直接对应就好
+-        model_body.load_weights(weights_path, by_name=True, skip_mismatch=True)
+-        print('Load weights {}.'.format(weights_path))
++        if not weights_path:
++            # by_name=True意味着通过layer的名字进行读取
++            # by_name=False意味着通过网络结构进行读取
++            # 这里应该是因为所有的layer都是默认的名字，所以，直接对应就好
++            model_body.load_weights(yolo_weights_path, by_name=True, skip_mismatch=True)
++            print('Load weights {}.'.format(yolo_weights_path))
++        else:
++            model_body.load_weights(weights_path, by_name=True, skip_mismatch=True)
++            print("Loaded model from {}".format(weights_path))
++
+         freeze_layer = list(range(len(model_body.layers)))
+         freeze_layer = list(set(freeze_layer).difference(dronet_trainable_layer))
+         try:
+diff --git a/yolo3/model.py b/yolo3/model.py
+index fb6fd73..71a25e8 100644
+--- a/yolo3/model.py
++++ b/yolo3/model.py
+@@ -21,7 +21,7 @@ from yolo3.utils import compose
+ @wraps(Conv2D)
+ def DarknetConv2D(*args, **kwargs):
+     """Wrapper to set Darknet parameters for Convolution2D."""
+-    darknet_conv_kwargs = {'kernel_regularizer': l2(5e-4)}
++    darknet_conv_kwargs = {'kernel_regularizer': l2(1e-5)}
+     darknet_conv_kwargs['padding'] = 'same'
+     darknet_conv_kwargs.update(kwargs)
+     return Conv2D(*args, **darknet_conv_kwargs)
