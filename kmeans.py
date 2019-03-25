@@ -96,6 +96,7 @@ class YOLO_Kmeans:
 
 if __name__ == "__main__":
     cluster_number = 6
-    filename = "train.txt"
+    filename = "/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/voc_train_data/2007_train.txt"
+    # filename = '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/turtlebot_training/train.txt'
     kmeans = YOLO_Kmeans(cluster_number, filename)
     kmeans.txt2clusters()

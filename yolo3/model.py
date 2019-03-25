@@ -172,6 +172,44 @@ def tiny_yolo_body(inputs, num_anchors, num_classes):
     print(model.summary())
     return model
 
+def tiny_yolo_body_changed(inputs, num_anchors, num_classes):
+    '''Create Tiny YOLO_v3 model CNN body in keras.'''
+    base_x1 = compose(
+            DarknetConv2D_BN_Leaky(16, (3,3)),
+            MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same'),
+            DarknetConv2D_BN_Leaky(32, (3,3)),
+            MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same'),
+            DarknetConv2D_BN_Leaky(64, (3,3)),
+            MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same'),
+            DarknetConv2D_BN_Leaky(128, (3,3)),)(inputs)
+    base_x2 = compose(
+            MaxPooling2D(pool_size=(2, 2), strides=(2, 2), padding='same'),
+            DarknetConv2D_BN_Leaky(256, (3, 3)))(base_x1)
+    base_x3 = compose(
+            MaxPooling2D(pool_size=(2,2), strides=(2,2), padding='same'),
+            DarknetConv2D_BN_Leaky(512, (3,3)),
+            MaxPooling2D(pool_size=(2,2), strides=(1,1), padding='same'),
+            DarknetConv2D_BN_Leaky(1024, (3,3)),
+            DarknetConv2D_BN_Leaky(256, (1,1)))(base_x2)
+    y1 = compose(
+            DarknetConv2D_BN_Leaky(512, (3,3)),
+            DarknetConv2D(num_anchors*(num_classes+5), (1,1)))(base_x3)
+
+    small_branch1 = compose(
+            DarknetConv2D_BN_Leaky(128, (1,1)),
+            UpSampling2D(2))(base_x3)
+    small_branch2 = compose(
+            DarknetConv2D_BN_Leaky(128, (3, 3), strides=(2,2)))(base_x1)
+    y2 = compose(
+            Concatenate(),
+            DarknetConv2D_BN_Leaky(256, (3, 3)),
+            DarknetConv2D_BN_Leaky(256, (3, 3)),
+            DarknetConv2D(num_anchors*(num_classes+5), (1,1)))([small_branch1, base_x2, small_branch2])
+
+    model = Model(inputs, [y1, y2])
+    # 打印网络参数
+    print(model.summary())
+    return model
 
 def mobilenet_tiny_yolo_body(inputs, num_anchors, num_classes, alpha=1.0, depth_multiplier=1):
     x = _conv_block(inputs, 32, alpha, strides=(2, 2))
@@ -306,6 +344,7 @@ def yolo_head(feats, anchors, num_classes, input_shape, calc_loss=False):
     # 利用sigmoid得到输出的中心坐标微调值，和原坐标相加，再除以总长度，得到在原图中的相对比例位置
     box_xy = (K.sigmoid(feats[..., :2]) + grid) / K.cast(grid_shape[::-1], K.dtype(feats))
     # 长和宽用exp来做
+    # anchor除以输入图像大小,作为基准
     box_wh = K.exp(feats[..., 2:4]) * anchors_tensor / K.cast(input_shape[::-1], K.dtype(feats))
     box_confidence = K.sigmoid(feats[..., 4:5])
     box_class_probs = K.sigmoid(feats[..., 5:])

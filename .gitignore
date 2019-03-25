@@ -108,3 +108,5 @@ ENV/
 .mypy_cache/
 
 logs/
+
+train_result/

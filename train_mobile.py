@@ -17,12 +17,12 @@ from yolo3.utils import get_random_data
 
 def _main():
     # change the setting following!!!#############
-    annotation_path = 'voc_train_data/2007_train.txt'
-    log_dir = 'logs/yolo_voc/mobilenet_3.13/'
-    classes_path = 'voc_train_data/voc_classes.txt'
-    anchors_path = 'voc_train_data/anchor.txt'
+    annotation_path = 'train_setting/voc_train_data/2007_train.txt'
+    log_dir = 'logs/yolo_voc/mobilenet_3.15/'
+    classes_path = 'train_setting/voc_train_data/voc_classes.txt'
+    anchors_path = 'train_setting/voc_train_data/anchor.txt'
     # only one of the following will be used
-    tiny_yolo_weights_path = 'mobilenet/mobilenet_1_0_224_tf.h5'
+    tiny_yolo_weights_path = 'Pre-training network/mobilenet_1_0_224_tf.h5'
     yolo_weights_path = 'model_data/yolo_weights.h5'
     first_stage_bs = 16
     second_stage_bs = 16
@@ -43,7 +43,7 @@ def _main():
     # 当评价指标不在提升时，减少学习率
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1)
     # 当监测值不再改善时，该回调函数将中止训练
-    early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1)
+    early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=20, verbose=1)
 
     val_split = 0.1
     with open(annotation_path) as f:
@@ -57,15 +57,16 @@ def _main():
     # Train with frozen layers first, to get a stable loss.
     # Adjust num epochs to your dataset. This step is enough to obtain a not bad model.
     if True:
+        for layer in model.layers:
+            if not layer.name.startswith('mobile_yolo_'):
+                layer.trainable = False
+
         # 把y_true当成输入，作为模型的多输入，把loss封装为层（即Lambda层），作为模型的输出
         # 在模型中，最终输出的y_pred就是loss
         model.compile(optimizer=Adam(lr=1e-3), loss={
             # use custom yolo_loss Lambda layer.
             'yolo_loss': lambda y_true, y_pred: y_pred})
 
-        for layer in model.layers:
-            if not layer.name.startswith('mobile_yolo_'):
-                layer.trainable = False
 
         batch_size = first_stage_bs
         print('Train on {} samples, val on {} samples, with batch size {}.'.format(num_train, num_val, batch_size))
@@ -92,7 +93,7 @@ def _main():
             steps_per_epoch=max(1, num_train//batch_size),
             validation_data=data_generator_wrapper(lines[num_train:], batch_size, input_shape, anchors, num_classes),
             validation_steps=max(1, num_val//batch_size),
-            epochs=100,
+            epochs=150,
             initial_epoch=50,
             callbacks=[logging, checkpoint, reduce_lr, early_stopping])
         model.save_weights(log_dir + 'trained_weights_final.h5')

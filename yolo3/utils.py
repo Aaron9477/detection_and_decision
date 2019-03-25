@@ -77,22 +77,27 @@ def get_random_data(annotation_line, input_shape, random=True, max_boxes=20, jit
 
     # 随机变化图像大小
     # resize image
+    # w/h比例随机变化
     new_ar = w/h * rand(1-jitter,1+jitter)/rand(1-jitter,1+jitter)
+    # 以input为基础，输入框的尺度随机变化
     scale = rand(.25, 2)
+    # 注意，下式首先变化长或宽，之后再以此为基础，再以新的w/h得到另一边的长度
     if new_ar < 1:
         nh = int(scale*h)
         nw = int(nh*new_ar)
     else:
         nw = int(scale*w)
         nh = int(nw/new_ar)
+    # 将图像resize到新的大小
     image = image.resize((nw,nh), Image.BICUBIC)
 
     # place image
+    # 随机寻找一点，作为图像crop的起点，保证crop的图像不会越界
     dx = int(rand(0, w-nw))
     dy = int(rand(0, h-nh))
     # Image.new最后一个参数是对三个通道进行赋值，作为初始化
     new_image = Image.new('RGB', (w,h), (128,128,128))
-    # 只截取图像的一部分,和上面代码结合相当于随机缩放图像
+    # 只截取图像的一部分,和上面代码结合相当于随机缩放图像，(dx, dy)定义左上点
     new_image.paste(image, (dx, dy))
     image = new_image
 

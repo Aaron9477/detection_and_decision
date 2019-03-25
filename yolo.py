@@ -13,21 +13,67 @@ from keras.models import load_model
 from keras.layers import Input
 from PIL import Image, ImageFont, ImageDraw
 
-from yolo3.model import yolo_eval, yolo_body, tiny_yolo_body
+from yolo3.model import yolo_eval, yolo_body, tiny_yolo_body, tiny_yolo_body_changed
 from yolo3.utils import letterbox_image
 import os
 from keras.utils import multi_gpu_model
 
 class YOLO(object):
+    # iou is the threshold of NMS
+    # turtlebot
     _defaults = {
-        "model_path": 'turtlebot_model/yolov3_tiny_turtlebot.h5',
-        "anchors_path": 'turtlebot_model/anchor.txt',
-        "classes_path": 'turtlebot_model/classes.txt',
-        "score" : 0.3,
+        "model_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/turtlebot_model/yolov3_tiny_turtlebot.h5',
+        "anchors_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/turtlebot_model/anchor.txt',
+        "classes_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/turtlebot_model/classes.txt',
+        "score" : 0.001,
         "iou" : 0.45,
         "model_image_size" : (320, 320),
         "gpu_num" : 1,
     }
+
+    # # use yolo with changing some layer and use old anchor
+    # _defaults = {
+    #     "model_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_result/yolo_voc/yolo_changed_old_anchor_3.19/ep096-loss13.480-val_loss16.178.h5',
+    #     "anchors_path": 'train_setting/origin_tiny_yolo/tiny_yolo_anchors.txt',
+    #     "classes_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/origin_tiny_yolo/voc_classes.txt',
+    #     "score" : 0.001,
+    #     "iou" : 0.45,
+    #     "model_image_size" : (320, 320),
+    #     "gpu_num" : 1,
+    # }
+
+    # # yolo trained by myself
+    # _defaults = {
+    #     "model_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_result/yolo_voc/yolo_origin_3.14_2/yolo_origin_3.14_2ep072-loss9.678-val_loss10.663.h5',
+    #     "anchors_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/voc_train_data/anchor.txt',
+    #     "classes_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/voc_train_data/voc_classes.txt',
+    #     "score" : 0.001,
+    #     "iou" : 0.45,
+    #     "model_image_size" : (320, 320),
+    #     "gpu_num" : 1,
+    # }
+
+    # origin trained tiny_yolov3
+    # _defaults = {
+    #     "model_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_result/yolo_voc/yolo_origin_old_anchor_3.19/ep084-loss14.408-val_loss15.732.h5',
+    #     "anchors_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/origin_tiny_yolo/tiny_yolo_anchors.txt',
+    #     "classes_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/origin_tiny_yolo/voc_classes.txt',
+    #     "score" : 0.001,
+    #     "iou" : 0.45,
+    #     "model_image_size" : (320, 320),
+    #     "gpu_num" : 1,
+    # }
+
+    # monilenet tiny_yolov3
+    # _defaults = {
+    #     "model_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_result/yolo_voc/mobilenet_3.13/ep072-loss7.523-val_loss10.299.h5',
+    #     "anchors_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/origin_tiny_yolo/tiny_yolo_anchors.txt',
+    #     "classes_path": '/home/zq610/WYZ/deeplearning/network/keras-yolo3/train_setting/origin_tiny_yolo/voc_classes.txt',
+    #     "score" : 0.3,
+    #     "iou" : 0.45,
+    #     "model_image_size" : (320, 320),
+    #     "gpu_num" : 1,
+    # }
 
     @classmethod
     def get_defaults(cls, n):
@@ -166,6 +212,34 @@ class YOLO(object):
         end = timer()
         print(end - start)
         return image
+
+    def detect_image_output(self, image):
+        start = timer()
+
+        if self.model_image_size != (None, None):
+            assert self.model_image_size[0]%32 == 0, 'Multiples of 32 required'
+            assert self.model_image_size[1]%32 == 0, 'Multiples of 32 required'
+            # 转换图片到固定大小
+            boxed_image = letterbox_image(image, tuple(reversed(self.model_image_size)))
+        else:
+            new_image_size = (image.width - (image.width % 32),
+                              image.height - (image.height % 32))
+            boxed_image = letterbox_image(image, new_image_size)
+        image_data = np.array(boxed_image, dtype='float32')
+
+        image_data /= 255.
+        image_data = np.expand_dims(image_data, 0)  # Add batch dimension.
+
+        out_boxes, out_scores, out_classes = self.sess.run(
+            [self.boxes, self.scores, self.classes],
+            feed_dict={
+                self.yolo_model.input: image_data,
+                self.input_image_shape: [image.size[1], image.size[0]],
+                K.learning_phase(): 0
+            })
+        # print('Found {} boxes for {}'.format(len(out_boxes), 'img'))
+        return out_boxes, out_scores, out_classes
+
 
     def close_session(self):
         self.sess.close()
